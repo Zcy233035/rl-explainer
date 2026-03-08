@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { lang, t } from '$lib/stores/i18n';
 	import Languages from 'lucide-svelte/icons/languages';
+	import Star from 'lucide-svelte/icons/star';
+	import Github from 'lucide-svelte/icons/github';
 
 	const sectionKeys = ['timeline', 'pipeline', 'formula-explain', 'formulas', 'details', 'comparison', 'papers', 'article'];
 
@@ -34,12 +36,22 @@
 				<span>{$lang === 'en' ? '中文' : 'EN'}</span>
 			</button>
 			<a
-				href="https://github.com"
+				href="https://github.com/Zcy233035/rl-explainer"
 				target="_blank"
 				rel="noopener"
-				class="text-base text-text-muted hover:text-primary transition-colors"
+				class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border rounded-lg hover:bg-surface-light transition-colors text-text-muted"
 			>
-				GitHub
+				<Github size={16} />
+				<span>GitHub</span>
+			</a>
+			<a
+				href="https://github.com/Zcy233035/rl-explainer"
+				target="_blank"
+				rel="noopener"
+				class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-amber-300 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors text-amber-700"
+			>
+				<Star size={16} />
+				<span>Star</span>
 			</a>
 		</div>
 	</div>
