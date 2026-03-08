@@ -1,0 +1,73 @@
+@import 'tailwindcss';
+
+@theme {
+	--color-primary: #4f46e5;
+	--color-primary-light: #6366f1;
+	--color-primary-dark: #4338ca;
+	--color-accent: #d97706;
+	--color-accent-light: #f59e0b;
+	--color-surface: #f8fafc;
+	--color-surface-light: #f1f5f9;
+	--color-bg: #ffffff;
+	--color-bg-light: #f8fafc;
+	--color-text: #1e293b;
+	--color-text-muted: #475569;
+	--color-positive: #059669;
+	--color-negative: #dc2626;
+	--color-border: #e2e8f0;
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+	--font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+html {
+	scroll-behavior: smooth;
+	font-size: 20px;
+}
+
+body {
+	font-family: var(--font-sans);
+	background: var(--color-bg);
+	color: var(--color-text);
+	line-height: 1.75;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+}
+::-webkit-scrollbar-track {
+	background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--color-border);
+	border-radius: 3px;
+}
+
+.katex { font-size: 1.15em; }
+.katex-display { margin: 0.5em 0; }
+.katex-display > .katex { text-align: center; }
+
+.formula-highlight {
+	background: #eef2ff;
+	border: 1px solid #c7d2fe;
+	border-radius: 10px;
+	padding: 18px 22px;
+	margin: 12px 0;
+	overflow-x: auto;
+}
+
+.formula-diff {
+	background: #fffbeb;
+	border: 1px solid #fde68a;
+	border-radius: 6px;
+	padding: 6px 10px;
+	overflow-x: auto;
+}
+
+.formula-fallback {
+	font-family: 'JetBrains Mono', 'Fira Code', monospace;
+	font-size: 0.9em;
+	color: #4338ca;
+	background: #eef2ff;
+	border-radius: 4px;
+	padding: 2px 6px;
+}
