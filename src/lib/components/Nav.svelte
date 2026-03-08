@@ -39,15 +39,6 @@
 				href="https://github.com/Zcy233035/rl-explainer"
 				target="_blank"
 				rel="noopener"
-				class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border rounded-lg hover:bg-surface-light transition-colors text-text-muted"
-			>
-				<Github size={16} />
-				<span>GitHub</span>
-			</a>
-			<a
-				href="https://github.com/Zcy233035/rl-explainer"
-				target="_blank"
-				rel="noopener"
 				class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-amber-300 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors text-amber-700"
 			>
 				<Star size={16} />
