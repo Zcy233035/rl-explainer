@@ -8,19 +8,113 @@
 	import Star from 'lucide-svelte/icons/star';
 	import BarChart3 from 'lucide-svelte/icons/bar-chart-3';
 	import RefreshCw from 'lucide-svelte/icons/refresh-cw';
+	import Scale from 'lucide-svelte/icons/scale';
+	import Copy from 'lucide-svelte/icons/copy';
+	import Filter from 'lucide-svelte/icons/filter';
+	import Users from 'lucide-svelte/icons/users';
+	import type { Component } from 'svelte';
 
 	let hoveredComponent: string | null = $state(null);
 
-	const pipelineStepKeys = [
-		{ id: 'prompt', labelKey: 'pipeline.prompt', descKey: 'pipeline.prompt.desc', icon: FileText },
-		{ id: 'policy', labelKey: 'pipeline.policy', descKey: 'pipeline.policy.desc', icon: Brain },
-		{ id: 'response', labelKey: 'pipeline.response', descKey: 'pipeline.response.desc', icon: MessageSquare },
-		{ id: 'reward', labelKey: 'pipeline.reward', descKey: 'pipeline.reward.desc', icon: Star },
-		{ id: 'advantage', labelKey: 'pipeline.advantage', descKey: 'pipeline.advantage.desc', icon: BarChart3 },
-		{ id: 'update', labelKey: 'pipeline.update', descKey: 'pipeline.update.desc', icon: RefreshCw }
-	];
+	interface PipelineStep {
+		id: string;
+		label: { en: string; zh: string };
+		desc: { en: string; zh: string };
+		icon: Component;
+		highlight?: boolean;
+	}
+
+	const pipelineConfigs: Record<string, PipelineStep[]> = {
+		reinforce: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'Response y', zh: '响应 y' }, desc: { en: '1 output', zh: '1 个输出' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score', zh: '评分' }, icon: Star },
+			{ id: 'update', label: { en: 'Policy Update', zh: '策略更新' }, desc: { en: 'R · ∇log π', zh: 'R · ∇log π' }, icon: RefreshCw, highlight: true },
+		],
+		ppo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'Response y', zh: '响应 y' }, desc: { en: '1 output', zh: '1 个输出' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Reward model', zh: '奖励模型' }, icon: Star },
+			{ id: 'critic', label: { en: 'Critic V(s)', zh: 'Critic V(s)' }, desc: { en: 'GAE advantage', zh: 'GAE 优势' }, icon: Scale, highlight: true },
+			{ id: 'update', label: { en: 'Clip Update', zh: '裁剪更新' }, desc: { en: 'min-clip + KL', zh: 'min-clip + KL' }, icon: RefreshCw },
+		],
+		rlhf: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'SFT → RL', zh: 'SFT → RL' }, icon: Brain },
+			{ id: 'response', label: { en: 'Response y', zh: '响应 y' }, desc: { en: '1 output', zh: '1 个输出' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R_φ', zh: '奖励 R_φ' }, desc: { en: 'Learned model', zh: '学习的模型' }, icon: Star, highlight: true },
+			{ id: 'critic', label: { en: 'Critic V(s)', zh: 'Critic V(s)' }, desc: { en: 'GAE advantage', zh: 'GAE 优势' }, icon: Scale, highlight: true },
+			{ id: 'update', label: { en: 'PPO Update', zh: 'PPO 更新' }, desc: { en: 'Clip + KL', zh: '裁剪 + KL' }, icon: RefreshCw },
+		],
+		dpo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'pref', label: { en: 'Pref Pair', zh: '偏好对' }, desc: { en: 'y_w vs y_l', zh: 'y_w vs y_l' }, icon: Users, highlight: true },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'ref', label: { en: 'Ref π_ref', zh: '参考 π_ref' }, desc: { en: 'Frozen SFT', zh: '冻结 SFT' }, icon: Copy },
+			{ id: 'update', label: { en: 'Direct Optim', zh: '直接优化' }, desc: { en: 'log σ(Δ)', zh: 'log σ(Δ)' }, icon: RefreshCw, highlight: true },
+		],
+		grpo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'G Responses', zh: 'G 个响应' }, desc: { en: 'Sample group', zh: '采样组' }, icon: MessageSquare, highlight: true },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score each', zh: '逐个评分' }, icon: Star },
+			{ id: 'advantage', label: { en: 'Group Adv', zh: '组优势' }, desc: { en: '(R-μ)/σ', zh: '(R-μ)/σ' }, icon: BarChart3, highlight: true },
+			{ id: 'update', label: { en: 'Clip Update', zh: '裁剪更新' }, desc: { en: 'Per-token r', zh: '逐 token r' }, icon: RefreshCw },
+		],
+		dapo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'Dynamic G', zh: '动态 G' }, desc: { en: '0<correct<G', zh: '0<正确<G' }, icon: MessageSquare, highlight: true },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score each', zh: '逐个评分' }, icon: Star },
+			{ id: 'advantage', label: { en: 'Group Adv', zh: '组优势' }, desc: { en: '(R-μ)/σ', zh: '(R-μ)/σ' }, icon: BarChart3 },
+			{ id: 'update', label: { en: 'Clip-Higher', zh: '非对称裁剪' }, desc: { en: 'ε_low ≠ ε_high', zh: 'ε_low ≠ ε_high' }, icon: RefreshCw, highlight: true },
+		],
+		gspo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'G Responses', zh: 'G 个响应' }, desc: { en: 'Sample group', zh: '采样组' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score each', zh: '逐个评分' }, icon: Star },
+			{ id: 'advantage', label: { en: 'Group Adv', zh: '组优势' }, desc: { en: '(R-μ)/σ', zh: '(R-μ)/σ' }, icon: BarChart3 },
+			{ id: 'update', label: { en: 'Seq-Level', zh: '序列级更新' }, desc: { en: 'Ratio sᵢ', zh: '比率 sᵢ' }, icon: RefreshCw, highlight: true },
+		],
+		reinforce_pp: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'Response y', zh: '响应 y' }, desc: { en: '1 output', zh: '1 个输出' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score', zh: '评分' }, icon: Star },
+			{ id: 'advantage', label: { en: 'Global Adv', zh: '全局优势' }, desc: { en: 'All prompts', zh: '跨所有提示' }, icon: BarChart3, highlight: true },
+			{ id: 'update', label: { en: 'Clip + KL', zh: '裁剪 + KL' }, desc: { en: 'Per-token r', zh: '逐 token r' }, icon: RefreshCw },
+		],
+		vapo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'G Responses', zh: 'G 个响应' }, desc: { en: 'Sample group', zh: '采样组' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score each', zh: '逐个评分' }, icon: Star },
+			{ id: 'critic', label: { en: 'Pretrained V', zh: '预训练 V' }, desc: { en: 'Decoupled GAE', zh: '解耦 GAE' }, icon: Scale, highlight: true },
+			{ id: 'update', label: { en: 'Clip Update', zh: '裁剪更新' }, desc: { en: 'Per-token Aₜ', zh: '逐 token Aₜ' }, icon: RefreshCw },
+		],
+		gmpo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'G Responses', zh: 'G 个响应' }, desc: { en: 'Sample group', zh: '采样组' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score each', zh: '逐个评分' }, icon: Star },
+			{ id: 'advantage', label: { en: 'Group Adv', zh: '组优势' }, desc: { en: '(R-μ)/σ', zh: '(R-μ)/σ' }, icon: BarChart3 },
+			{ id: 'update', label: { en: 'Geo-Mean', zh: '几何平均' }, desc: { en: '(∏rₜ)^(1/T)', zh: '(∏rₜ)^(1/T)' }, icon: RefreshCw, highlight: true },
+		],
+		gfpo: [
+			{ id: 'prompt', label: { en: 'Prompt x', zh: '提示 x' }, desc: { en: 'Input', zh: '输入' }, icon: FileText },
+			{ id: 'policy', label: { en: 'Policy π_θ', zh: '策略 π_θ' }, desc: { en: 'LLM', zh: 'LLM' }, icon: Brain },
+			{ id: 'response', label: { en: 'G Responses', zh: 'G 个响应' }, desc: { en: 'Sample group', zh: '采样组' }, icon: MessageSquare },
+			{ id: 'reward', label: { en: 'Reward R', zh: '奖励 R' }, desc: { en: 'Score each', zh: '逐个评分' }, icon: Star },
+			{ id: 'filter', label: { en: 'Filter Sᶠ', zh: '过滤 Sᶠ' }, desc: { en: 'R/len > τ', zh: 'R/长度 > τ' }, icon: Filter, highlight: true },
+			{ id: 'update', label: { en: 'Clip Update', zh: '裁剪更新' }, desc: { en: 'Concise only', zh: '仅简洁响应' }, icon: RefreshCw },
+		],
+	};
 
 	let algo = $derived($selectedAlgorithm);
+	let steps = $derived(pipelineConfigs[$selectedAlgorithmId] ?? pipelineConfigs.grpo);
 	let specifics = $derived(getPipelineSpecifics($selectedAlgorithmId, $lang));
 </script>
 
@@ -47,23 +141,26 @@
 
 		<div class="bg-white border border-border rounded-xl p-10 mb-8 shadow-sm">
 			<div class="flex items-center justify-between gap-3 overflow-x-auto pb-4">
-				{#each pipelineStepKeys as step, i}
+				{#each steps as step, i}
 					<div class="flex items-center min-w-0">
 						<button
 							class="flex flex-col items-center p-4 rounded-xl transition-all min-w-[110px] border-2"
+							class:border-transparent={hoveredComponent !== step.id && !step.highlight}
 							class:border-primary={hoveredComponent === step.id}
 							class:bg-indigo-50={hoveredComponent === step.id}
-							class:border-transparent={hoveredComponent !== step.id}
 							onmouseenter={() => hoveredComponent = step.id}
 							onmouseleave={() => hoveredComponent = null}
+							style={step.highlight && hoveredComponent !== step.id ? `border-color: ${algo.color}30; background: ${algo.color}08;` : ''}
 						>
-							<span class="mb-2 text-text-muted">
+							<span class="mb-2" style={step.highlight ? `color: ${algo.color};` : 'color: var(--color-text-muted);'}>
 								<step.icon size={28} strokeWidth={1.5} />
 							</span>
-							<span class="text-base font-mono font-bold text-text whitespace-nowrap">{t(step.labelKey, $lang)}</span>
-							<span class="text-sm text-text-muted mt-1">{t(step.descKey, $lang)}</span>
+							<span class="text-base font-mono font-bold whitespace-nowrap" style={step.highlight ? `color: ${algo.color};` : 'color: var(--color-text);'}>
+								{step.label[$lang]}
+							</span>
+							<span class="text-sm text-text-muted mt-1">{step.desc[$lang]}</span>
 						</button>
-						{#if i < pipelineStepKeys.length - 1}
+						{#if i < steps.length - 1}
 							<svg class="w-8 h-8 text-primary/50 flex-shrink-0 mx-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<path d="M5 12h14m-4-4l4 4-4 4"/>
 							</svg>
