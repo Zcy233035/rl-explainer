@@ -21,8 +21,12 @@
 
 html {
 	scroll-behavior: smooth;
-	font-size: 20px;
+	font-size: 16px;
 }
+@media (min-width: 768px) {
+	html { font-size: 20px; }
+}
+
 
 body {
 	font-family: var(--font-sans);
@@ -42,7 +46,10 @@ body {
 	border-radius: 3px;
 }
 
-.katex { font-size: 1.15em; }
+.katex { font-size: 1.05em; }
+@media (min-width: 768px) {
+	.katex { font-size: 1.15em; }
+}
 .katex-display { margin: 0.5em 0; }
 .katex-display > .katex { text-align: center; }
 
@@ -50,9 +57,13 @@ body {
 	background: #eef2ff;
 	border: 1px solid #c7d2fe;
 	border-radius: 10px;
-	padding: 18px 22px;
+	padding: 12px 14px;
 	margin: 12px 0;
 	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+@media (min-width: 768px) {
+	.formula-highlight { padding: 18px 22px; }
 }
 
 .formula-diff {

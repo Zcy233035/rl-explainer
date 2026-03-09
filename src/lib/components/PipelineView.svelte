@@ -139,12 +139,12 @@
 			{/each}
 		</div>
 
-		<div class="bg-white border border-border rounded-xl p-10 mb-8 shadow-sm">
-			<div class="flex items-center justify-between gap-3 overflow-x-auto pb-4">
+		<div class="bg-white border border-border rounded-xl p-4 md:p-10 mb-8 shadow-sm">
+			<div class="flex items-center gap-1 md:gap-3 md:justify-between overflow-x-auto pb-4 -webkit-overflow-scrolling-touch">
 				{#each steps as step, i}
-					<div class="flex items-center min-w-0">
+					<div class="flex items-center min-w-0 flex-shrink-0">
 						<button
-							class="flex flex-col items-center p-4 rounded-xl transition-all min-w-[110px] border-2"
+							class="flex flex-col items-center p-2 md:p-4 rounded-xl transition-all min-w-[80px] md:min-w-[110px] border-2"
 							class:border-transparent={hoveredComponent !== step.id && !step.highlight}
 							class:border-primary={hoveredComponent === step.id}
 							class:bg-indigo-50={hoveredComponent === step.id}
@@ -152,16 +152,17 @@
 							onmouseleave={() => hoveredComponent = null}
 							style={step.highlight && hoveredComponent !== step.id ? `border-color: ${algo.color}30; background: ${algo.color}08;` : ''}
 						>
-							<span class="mb-2" style={step.highlight ? `color: ${algo.color};` : 'color: var(--color-text-muted);'}>
-								<step.icon size={28} strokeWidth={1.5} />
+							<span class="mb-1 md:mb-2" style={step.highlight ? `color: ${algo.color};` : 'color: var(--color-text-muted);'}>
+								<step.icon size={22} strokeWidth={1.5} class="md:hidden" />
+								<step.icon size={28} strokeWidth={1.5} class="hidden md:block" />
 							</span>
-							<span class="text-base font-mono font-bold whitespace-nowrap" style={step.highlight ? `color: ${algo.color};` : 'color: var(--color-text);'}>
+							<span class="text-xs md:text-base font-mono font-bold whitespace-nowrap" style={step.highlight ? `color: ${algo.color};` : 'color: var(--color-text);'}>
 								{step.label[$lang]}
 							</span>
-							<span class="text-sm text-text-muted mt-1">{step.desc[$lang]}</span>
+							<span class="text-xs md:text-sm text-text-muted mt-0.5 md:mt-1">{step.desc[$lang]}</span>
 						</button>
 						{#if i < steps.length - 1}
-							<svg class="w-8 h-8 text-primary/50 flex-shrink-0 mx-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<svg class="w-5 h-5 md:w-8 md:h-8 text-primary/50 flex-shrink-0 mx-0.5 md:mx-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<path d="M5 12h14m-4-4l4 4-4 4"/>
 							</svg>
 						{/if}
@@ -183,13 +184,13 @@
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-6">
-			<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
-				<h3 class="text-xl font-bold mb-4">
+			<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
+				<h3 class="text-lg md:text-xl font-bold mb-4">
 					<span style="color:{algo.color}">{algo.name}</span> {t('pipeline.components', $lang)}
 				</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each specifics.extras as extra}
-						<span class="px-4 py-2 text-base font-mono bg-surface-light border border-border rounded-lg" style="border-left: 4px solid {algo.color}">
+						<span class="px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base font-mono bg-surface-light border border-border rounded-lg" style="border-left: 4px solid {algo.color}">
 							{extra}
 						</span>
 					{/each}
@@ -198,8 +199,8 @@
 					{/if}
 				</div>
 			</div>
-			<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
-				<h3 class="text-xl font-bold text-accent mb-4">{t('pipeline.mechanism', $lang)}</h3>
+			<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
+				<h3 class="text-lg md:text-xl font-bold text-accent mb-4">{t('pipeline.mechanism', $lang)}</h3>
 				<p class="text-lg text-text-muted leading-relaxed">{specifics.notes}</p>
 			</div>
 		</div>

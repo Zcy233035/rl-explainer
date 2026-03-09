@@ -504,7 +504,7 @@
 		</div>
 
 		<!-- Interactive full formula -->
-		<div class="bg-white border border-border rounded-xl p-8 shadow-sm mb-8">
+		<div class="bg-white border border-border rounded-xl p-4 md:p-8 shadow-sm mb-8">
 			<div class="text-sm font-medium text-text-muted mb-4 uppercase tracking-wider">
 				{$lang === 'zh' ? '点击公式中高亮部分 ↓' : 'Click highlighted parts ↓'}
 			</div>
@@ -535,14 +535,14 @@
 
 		<!-- Segment chips + explanation -->
 		<div class="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
-			<div class="px-8 py-5 border-b border-border bg-surface-light/50">
+			<div class="px-4 md:px-8 py-4 md:py-5 border-b border-border bg-surface-light/50">
 				<div class="text-base font-bold text-primary">
 					{$lang === 'zh' ? '公式组成部分' : 'Formula Components'}
 				</div>
 			</div>
 
-			<div class="p-8">
-				<div class="flex flex-wrap gap-3 mb-6">
+			<div class="p-4 md:p-8">
+				<div class="flex flex-wrap gap-2 md:gap-3 mb-6">
 					{#each selectedFormula.segments as seg}
 						<button
 							onclick={() => selectSegment(seg.id)}
@@ -551,11 +551,11 @@
 								? `border-color: ${seg.color}; background: ${seg.color}08; box-shadow: 0 0 0 3px ${seg.color}20;`
 								: `border-color: #e2e8f0;`}
 						>
-							<div class="px-4 py-1 text-xs font-bold tracking-wider uppercase text-white"
+							<div class="px-3 md:px-4 py-1 text-xs font-bold tracking-wider uppercase text-white"
 								style="background: {seg.color};">
 								{seg.label[$lang]}
 							</div>
-							<div class="px-5 py-3 overflow-x-auto">
+							<div class="px-3 md:px-5 py-2 md:py-3 overflow-x-auto">
 								{@html renderLatex(seg.latex, false)}
 							</div>
 						</button>
@@ -563,7 +563,7 @@
 				</div>
 
 				{#if selectedSegment}
-					<div class="rounded-xl border-2 p-6 transition-all duration-300 animate-fade-in"
+					<div class="rounded-xl border-2 p-4 md:p-6 transition-all duration-300 animate-fade-in"
 						style="border-color: {selectedSegment.color}; background: {selectedSegment.color}06;">
 						<div class="flex items-center gap-3 mb-4">
 							<div class="w-4 h-4 rounded-full" style="background: {selectedSegment.color};"></div>
@@ -579,7 +579,7 @@
 						</p>
 					</div>
 				{:else}
-					<div class="rounded-xl border-2 border-dashed border-border p-8 text-center text-text-muted">
+					<div class="rounded-xl border-2 border-dashed border-border p-5 md:p-8 text-center text-text-muted">
 						<p class="text-lg">
 							{$lang === 'zh'
 								? '点击上方公式中的高亮部分或下方的模块卡片，查看详细解释'
@@ -591,7 +591,7 @@
 		</div>
 
 		{#if selectedFormula.vsGrpo && selectedFormulaId !== 'grpo'}
-			<div class="mt-8 bg-white border border-border rounded-xl p-8 shadow-sm">
+			<div class="mt-8 bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
 				<h3 class="text-xl font-bold text-accent mb-4 flex items-center gap-2">
 					<ChevronRight size={20} />
 					{$lang === 'zh'

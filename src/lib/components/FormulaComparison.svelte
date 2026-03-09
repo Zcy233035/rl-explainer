@@ -59,14 +59,14 @@
 				{#each algorithms.filter(a => a.formulaDiffs && a.formulaDiffs.length > 0) as algo}
 					{@const algoText = getAlgoText(algo.id, $lang)}
 					<div class="bg-white border border-border rounded-xl overflow-hidden shadow-sm">
-						<div class="px-8 py-5 border-b border-border flex items-center gap-4 bg-surface-light/50">
+						<div class="px-4 md:px-8 py-4 md:py-5 border-b border-border flex flex-wrap items-center gap-2 md:gap-4 bg-surface-light/50">
 							<div class="w-5 h-5 rounded-full" style="background:{algo.color}"></div>
-							<h3 class="font-bold text-2xl">{algo.name}</h3>
-							<span class="text-base text-text-muted">{algo.fullName}</span>
-							<span class="ml-auto text-base px-3 py-1 rounded bg-white text-text-muted border border-border font-medium">{algo.year}</span>
+							<h3 class="font-bold text-xl md:text-2xl">{algo.name}</h3>
+							<span class="text-sm md:text-base text-text-muted hidden sm:inline">{algo.fullName}</span>
+							<span class="ml-auto text-sm md:text-base px-2 md:px-3 py-1 rounded bg-white text-text-muted border border-border font-medium">{algo.year}</span>
 						</div>
 
-						<div class="px-8 py-6 border-b border-border/50">
+						<div class="px-4 md:px-8 py-4 md:py-6 border-b border-border/50">
 							<div class="text-base font-medium text-text-muted mb-3">{t('formulas.objective', $lang)}</div>
 							<div class="formula-highlight overflow-x-auto">
 								{@html renderLatex(algo.objective, true)}
@@ -74,11 +74,11 @@
 							<p class="text-base text-text-muted mt-4 leading-relaxed">{algoText?.objectiveExplanation ?? algo.objectiveExplanation}</p>
 						</div>
 
-						<div class="px-8 py-6">
+						<div class="px-4 md:px-8 py-4 md:py-6">
 							<div class="text-lg font-bold text-accent mb-5">{t('formulas.keydiff', $lang)}</div>
 							<div class="space-y-5">
 								{#each algo.formulaDiffs || [] as diff}
-									<div class="bg-surface-light rounded-xl p-6">
+									<div class="bg-surface-light rounded-xl p-4 md:p-6">
 										<div class="text-base font-bold text-primary mb-4">{diff.label}</div>
 										<div class="grid md:grid-cols-2 gap-5">
 											<div>

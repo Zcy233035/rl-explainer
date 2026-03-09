@@ -128,8 +128,8 @@
 			</div>
 		</div>
 
-		<div class="grid lg:grid-cols-2 gap-8">
-			<div class="bg-white border border-border rounded-xl p-8 flex flex-col items-center shadow-sm">
+		<div class="grid lg:grid-cols-2 gap-6 md:gap-8">
+			<div class="bg-white border border-border rounded-xl p-5 md:p-8 flex flex-col items-center shadow-sm">
 				<h3 class="text-xl font-bold text-primary mb-6">{t('compare.radar', $lang)}</h3>
 				<svg bind:this={radarSvg} class="w-full max-w-[380px]"></svg>
 				<div class="flex gap-8 mt-6 text-base">
@@ -144,14 +144,14 @@
 				</div>
 			</div>
 
-			<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
+			<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm overflow-x-auto">
 				<h3 class="text-xl font-bold text-primary mb-6">{t('compare.feature', $lang)}</h3>
-				<table class="w-full">
+				<table class="w-full text-sm md:text-base">
 					<thead>
 						<tr class="border-b-2 border-border">
-							<th class="text-left text-base text-text-muted py-3">Feature</th>
-							<th class="text-center text-base py-3 font-bold" style="color:{leftAlgo.color}">{leftAlgo.name}</th>
-							<th class="text-center text-base py-3 font-bold" style="color:{rightAlgo.color}">{rightAlgo.name}</th>
+							<th class="text-left text-text-muted py-3">Feature</th>
+							<th class="text-center py-3 font-bold" style="color:{leftAlgo.color}">{leftAlgo.name}</th>
+							<th class="text-center py-3 font-bold" style="color:{rightAlgo.color}">{rightAlgo.name}</th>
 						</tr>
 					</thead>
 					<tbody>

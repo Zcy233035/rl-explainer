@@ -38,13 +38,13 @@
 		</div>
 
 		{#if algo}
-			<div class="grid lg:grid-cols-3 gap-8">
+			<div class="grid lg:grid-cols-3 gap-6 md:gap-8">
 				<div class="lg:col-span-2 space-y-6">
-					<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
-						<div class="flex items-center gap-3 mb-5">
-							<div class="w-6 h-6 rounded-full" style="background:{algo.color}"></div>
-							<h3 class="text-3xl font-bold">{algo.name}</h3>
-							<span class="text-lg text-text-muted">{algo.fullName}</span>
+					<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
+						<div class="flex flex-wrap items-center gap-2 md:gap-3 mb-5">
+							<div class="w-5 md:w-6 h-5 md:h-6 rounded-full" style="background:{algo.color}"></div>
+							<h3 class="text-2xl md:text-3xl font-bold">{algo.name}</h3>
+							<span class="text-sm md:text-lg text-text-muted">{algo.fullName}</span>
 						</div>
 						<p class="text-lg text-text-muted leading-relaxed mb-5">{algoText?.description ?? algo.description}</p>
 						<div class="bg-surface-light rounded-xl p-5 mb-5">
@@ -57,12 +57,12 @@
 						<p class="text-base text-text-muted mt-4 leading-relaxed">{algoText?.objectiveExplanation ?? algo.objectiveExplanation}</p>
 					</div>
 
-					<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
+					<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
 						<h4 class="text-xl font-bold text-primary mb-4">{t('details.components', $lang)}</h4>
-						<div class="flex flex-wrap gap-3">
+						<div class="flex flex-wrap gap-2 md:gap-3">
 							{#each algo.components as comp}
 								<div
-									class="px-5 py-3 rounded-xl border text-base font-mono"
+									class="px-3 md:px-5 py-2 md:py-3 rounded-xl border text-sm md:text-base font-mono"
 									class:bg-blue-50={comp.type === 'model'}
 									class:border-blue-200={comp.type === 'model'}
 									class:bg-emerald-50={comp.type === 'process'}
@@ -79,7 +79,7 @@
 						</div>
 					</div>
 
-					<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
+					<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
 						<h4 class="text-xl font-bold text-primary mb-4">{t('details.papers', $lang)}</h4>
 						{#each algo.papers as paper}
 							<a href={paper.url} target="_blank" rel="noopener" class="block text-lg text-primary hover:underline mb-2">
@@ -90,7 +90,7 @@
 				</div>
 
 				<div class="space-y-6">
-					<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
+					<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
 						<h4 class="text-xl font-bold text-positive mb-4">{t('details.advantages', $lang)}</h4>
 						<ul class="space-y-3">
 							{#each (algoText?.pros ?? algo.pros) as pro}
@@ -101,7 +101,7 @@
 							{/each}
 						</ul>
 					</div>
-					<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
+					<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
 						<h4 class="text-xl font-bold text-negative mb-4">{t('details.limitations', $lang)}</h4>
 						<ul class="space-y-3">
 							{#each (algoText?.cons ?? algo.cons) as con}
@@ -112,7 +112,7 @@
 							{/each}
 						</ul>
 					</div>
-					<div class="bg-white border border-border rounded-xl p-8 shadow-sm">
+					<div class="bg-white border border-border rounded-xl p-5 md:p-8 shadow-sm">
 						<h4 class="text-xl font-bold text-primary mb-5">{t('details.metrics', $lang)}</h4>
 						{#each Object.entries(algo.metrics) as [key, value]}
 							<div class="mb-4">

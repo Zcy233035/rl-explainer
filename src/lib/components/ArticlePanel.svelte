@@ -12,9 +12,9 @@
 
 		<div class="space-y-10">
 			{#each sections as section, i}
-				<article class="bg-white border border-border rounded-xl p-10 shadow-sm">
-					<div class="flex items-center gap-4 mb-5">
-						<span class="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center text-lg font-bold">
+				<article class="bg-white border border-border rounded-xl p-5 md:p-10 shadow-sm">
+					<div class="flex items-center gap-3 md:gap-4 mb-5">
+						<span class="w-9 h-9 md:w-11 md:h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base md:text-lg font-bold flex-shrink-0">
 							{i + 1}
 						</span>
 						<h3 class="text-2xl font-bold">{section.title}</h3>
