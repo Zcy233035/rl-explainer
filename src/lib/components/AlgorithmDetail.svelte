@@ -3,6 +3,7 @@
 	import { selectedAlgorithmId, selectedAlgorithm } from '$lib/stores/algorithm';
 	import { renderLatex } from '$lib/utils/katex-render';
 	import { lang, t, getAlgoText } from '$lib/stores/i18n';
+	import LatexCopyButton from './LatexCopyButton.svelte';
 
 	let algo = $derived($selectedAlgorithm);
 	let algoText = $derived(algo ? getAlgoText(algo.id, $lang) : undefined);
@@ -51,9 +52,11 @@
 							<div class="text-base font-bold text-accent mb-2">{t('details.innovation', $lang)}</div>
 							<p class="text-lg text-text">{algoText?.keyInnovation ?? algo.keyInnovation}</p>
 						</div>
+						<LatexCopyButton latex={algo.objective}>
 						<div class="formula-highlight overflow-x-auto">
 							{@html renderLatex(algo.objective, true)}
 						</div>
+					</LatexCopyButton>
 						<p class="text-base text-text-muted mt-4 leading-relaxed">{algoText?.objectiveExplanation ?? algo.objectiveExplanation}</p>
 					</div>
 

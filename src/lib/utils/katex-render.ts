@@ -10,8 +10,9 @@ export function renderLatex(tex: string, displayMode = false): string {
 			return `\\text{${content.replace(/_/g, '\\_')}}`;
 		});
 
+	let html: string;
 	try {
-		return katex.renderToString(processed, {
+		html = katex.renderToString(processed, {
 			displayMode,
 			throwOnError: false,
 			trust: true,
@@ -22,7 +23,7 @@ export function renderLatex(tex: string, displayMode = false): string {
 	} catch {
 		// Fallback: try without display mode
 		try {
-			return katex.renderToString(processed, {
+			html = katex.renderToString(processed, {
 				displayMode: false,
 				throwOnError: false,
 				trust: true,
@@ -30,9 +31,19 @@ export function renderLatex(tex: string, displayMode = false): string {
 			});
 		} catch {
 			// Final fallback: render as formatted code
-			return `<code class="formula-fallback">${escapeHtml(tex)}</code>`;
+			return `<code class="formula-fallback latex-formula" data-latex="${escapeAttr(tex)}">${escapeHtml(tex)}</code>`;
 		}
 	}
+
+	// Wrap with data-latex attribute for copy functionality
+	return `<span class="latex-formula" data-latex="${escapeAttr(tex)}">${html}</span>`;
+}
+
+function escapeAttr(str: string): string {
+	return str
+		.replace(/&/g, '&amp;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
 }
 
 function escapeHtml(str: string): string {

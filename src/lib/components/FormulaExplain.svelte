@@ -2,6 +2,7 @@
 	import { renderLatex } from '$lib/utils/katex-render';
 	import { lang } from '$lib/stores/i18n';
 	import ChevronRight from 'lucide-svelte/icons/chevron-right';
+	import LatexCopyButton from './LatexCopyButton.svelte';
 
 	interface FormulaSegment {
 		id: string;
@@ -466,6 +467,7 @@
 	let selectedSegment = $derived(
 		selectedSegmentId ? selectedFormula.segments.find(s => s.id === selectedSegmentId) ?? null : null
 	);
+	let fullFormulaLatex = $derived(selectedFormula.formulaParts.map(p => p.latex).join(' '));
 
 	function getSegmentColor(segId: string | null): string | null {
 		if (!segId) return null;
@@ -508,29 +510,31 @@
 			<div class="text-sm font-medium text-text-muted mb-4 uppercase tracking-wider">
 				{$lang === 'zh' ? '点击公式中高亮部分 ↓' : 'Click highlighted parts ↓'}
 			</div>
-			<div class="formula-highlight overflow-x-auto flex flex-wrap items-center justify-center gap-0">
-				{#each selectedFormula.formulaParts as part}
-					{@const segColor = getSegmentColor(part.segId)}
-					{#if part.segId}
-						<button
-							onclick={() => selectSegment(part.segId!)}
-							class="formula-part-btn relative transition-all duration-200 rounded-md cursor-pointer"
-							style={selectedSegmentId === part.segId
-								? `background: ${segColor}18; box-shadow: 0 0 0 2px ${segColor}; border-radius: 6px;`
-								: ''}
-							title={selectedFormula.segments.find(s => s.id === part.segId)?.label[$lang] ?? ''}
-						>
-							<span class="formula-part-underline" style="--seg-color: {segColor};">
+			<LatexCopyButton latex={fullFormulaLatex}>
+				<div class="formula-highlight overflow-x-auto flex flex-wrap items-center justify-center gap-0">
+					{#each selectedFormula.formulaParts as part}
+						{@const segColor = getSegmentColor(part.segId)}
+						{#if part.segId}
+							<button
+								onclick={() => selectSegment(part.segId!)}
+								class="formula-part-btn relative transition-all duration-200 rounded-md cursor-pointer"
+								style={selectedSegmentId === part.segId
+									? `background: ${segColor}18; box-shadow: 0 0 0 2px ${segColor}; border-radius: 6px;`
+									: ''}
+								title={selectedFormula.segments.find(s => s.id === part.segId)?.label[$lang] ?? ''}
+							>
+								<span class="formula-part-underline" style="--seg-color: {segColor};">
+									{@html renderLatex(part.latex, false)}
+								</span>
+							</button>
+						{:else}
+							<span class="formula-part-static">
 								{@html renderLatex(part.latex, false)}
 							</span>
-						</button>
-					{:else}
-						<span class="formula-part-static">
-							{@html renderLatex(part.latex, false)}
-						</span>
-					{/if}
-				{/each}
-			</div>
+						{/if}
+					{/each}
+				</div>
+			</LatexCopyButton>
 		</div>
 
 		<!-- Segment chips + explanation -->
@@ -571,9 +575,11 @@
 								{selectedSegment.label[$lang]}
 							</h4>
 						</div>
-						<div class="mb-4 inline-block formula-highlight">
-							{@html renderLatex(selectedSegment.latex, true)}
-						</div>
+						<LatexCopyButton latex={selectedSegment.latex}>
+							<div class="mb-4 inline-block formula-highlight">
+								{@html renderLatex(selectedSegment.latex, true)}
+							</div>
+						</LatexCopyButton>
 						<p class="text-lg text-text-muted leading-relaxed whitespace-pre-line">
 							{selectedSegment.explanation[$lang]}
 						</p>
